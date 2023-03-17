@@ -1,0 +1,20 @@
+create project(MVC or webapi)
+
+
+Ef core
+	create company model
+	add connection string
+	nuget packages
+		Microsoft.EntityFrameworkCore.SqlServer
+		Microsoft.EntityFrameworkCore.Tools
+
+	create dbcontext
+		ApplicationDbContext:DbContext
+	program.cs
+		builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+	pushing  data to db(company table)
+		create companies controller : MVC controller with entityframmework core
+	add link to comapnies controller Index method in View/Shared/_Layout.cshtml
