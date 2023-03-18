@@ -34,7 +34,7 @@ namespace DapperDemo.Repository {
             return true;
         }
         public List<Company> GetAll() {
-            return _connection.Query<Company>("usp_GetALLCompany",commandType:CommandType.StoredProcedure).ToList();
+            return _connection.Query<Company>("usp_GetALLCompany", commandType: CommandType.StoredProcedure).ToList();
         }
         public Company GetById(int id) {
             return _connection.Query<Company>("usp_GetCompany", new { CompanyId = id }, commandType: CommandType.StoredProcedure).FirstOrDefault();

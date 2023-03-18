@@ -70,21 +70,18 @@ namespace DapperDemo.Controllers {
                 return NotFound();
             }
 
-            if (ModelState.IsValid) {
-                try {
-                    _context.Update(company);
-                }
-                catch (DbUpdateConcurrencyException) {
-                    if (!await (CompanyExists(company.Id))) {
-                        return NotFound();
-                    }
-                    else {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+            try {
+                _context.Update(company);
             }
-            return View(company);
+            catch (DbUpdateConcurrencyException) {
+                if (!await (CompanyExists(company.Id))) {
+                    return NotFound();
+                }
+                else {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Companies/Delete/5

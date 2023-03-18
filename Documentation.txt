@@ -61,3 +61,14 @@ stored procedures in dapper
 	create  sp in sql server
 	create CompanyRepositoryDapperSP for service implementation
 
+
+
+Dapper contrib
+	create repository for  dapper contrib
+		CompanyRepositoryDapperContrib
+	install Dapper.contrib  nuget package
+	add dataannotation in Company model
+		[Key]
+		[Write(false)]
+	changes in repository
+		
