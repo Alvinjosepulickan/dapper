@@ -18,3 +18,43 @@ Ef core
 	pushing  data to db(company table)
 		create companies controller : MVC controller with entityframmework core
 	add link to comapnies controller Index method in View/Shared/_Layout.cshtml
+	create repository for  ef core
+		create interface and service
+			ICompanyRepository
+			CompanyRepositoryEF
+
+Dapper
+	nuget package Dapper
+	create new implementatio of ICompanyRepository using Dapper
+		CompanyRepositoryDapper
+
+
+
+
+		private readonly IConfiguration _configuration;
+        private readonly IDbConnection _connection;
+        public CompanyRepositoryDapper(IConfiguration configuration,IDbConnection connection)
+        {
+            _configuration = configuration;
+            _connection=new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        }
+
+
+
+
+
+	create Employee model
+		1-N relation between employee and company
+		create repository , controller, views and add link in _Layout.cshtml
+
+
+
+		employee relation with company
+			@ViewBag.CompanyList
+			in create method 
+				
+
+
+
+
+stored procedures in dapper

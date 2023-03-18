@@ -11,11 +11,14 @@ using DapperDemo.Repository;
 using System.ComponentModel.Design;
 
 namespace DapperDemo.Controllers {
-    public class CompaniesController : Controller {
-        private readonly ICompanyRepository _context;
-
-        public CompaniesController(ICompanyRepository context) {
+    public class EmployeesController : Controller {
+        private readonly IEmployeeRepository _context;
+        private readonly ICompanyRepository _company;
+        [BindProperty]
+        public Employee employee { get; set; }
+        public EmployeesController(IEmployeeRepository context, ICompanyRepository company) {
             _context = context;
+            _company = company;
         }
 
         // GET: Companies
@@ -25,17 +28,23 @@ namespace DapperDemo.Controllers {
 
         // GET: Companies/Details/5
         public async Task<IActionResult> Details(int? id) {
-            int companyId = id.GetValueOrDefault();
-            var company = _context.GetById(companyId);
-            if (company == null) {
+            int employeeId = id.GetValueOrDefault();
+            var employee = _context.GetById(employeeId);
+            if (employee == null) {
                 return NotFound();
             }
 
-            return View(company);
+            return View(employee);
         }
 
         // GET: Companies/Create
+        [HttpGet]
         public IActionResult Create() {
+            IEnumerable<SelectListItem> companyList = _company.GetAll().Select(i => new SelectListItem {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            ViewBag.CompanyList = companyList;
             return View();
         }
 
@@ -44,20 +53,25 @@ namespace DapperDemo.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,City,State,PostalCode")] Company company) {
-            _context.Create(company);
+        [ActionName("CreatePost")]
+        public async Task<IActionResult> CreatePost() {
+            _context.Create(employee);
             return RedirectToAction(nameof(Index));
-            //return View(company);
         }
 
         // GET: Companies/Edit/5
         public async Task<IActionResult> Edit(int? id) {
-            int companyId = id.GetValueOrDefault();
-            var company = _context.GetById(companyId);
-            if (company == null) {
+            int employeeId = id.GetValueOrDefault();
+            var employee = _context.GetById(employeeId);
+            if (employee == null) {
                 return NotFound();
             }
-            return View(company);
+            IEnumerable<SelectListItem> companyList = _company.GetAll().Select(i => new SelectListItem {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+            ViewBag.CompanyList = companyList;
+            return View(employee);
         }
 
         // POST: Companies/Edit/5
@@ -65,17 +79,18 @@ namespace DapperDemo.Controllers {
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,City,State,PostalCode")] Company company) {
-            if (id != company.Id) {
+        [ActionName("Edit")]
+        public async Task<IActionResult> Edit(int id) {
+            if (id != employee.Id) {
                 return NotFound();
             }
 
             if (ModelState.IsValid) {
                 try {
-                    _context.Update(company);
+                    _context.Update(employee);
                 }
                 catch (DbUpdateConcurrencyException) {
-                    if (!await (CompanyExists(company.Id))) {
+                    if (!await (EmployeeExists(employee.Id))) {
                         return NotFound();
                     }
                     else {
@@ -84,18 +99,18 @@ namespace DapperDemo.Controllers {
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(employee);
         }
 
         // GET: Companies/Delete/5
         public async Task<IActionResult> Delete(int? id) {
-            int companyId = id.GetValueOrDefault();
-            var company = _context.GetById(companyId);
-            if (company == null) {
+            int employeeId = id.GetValueOrDefault();
+            var employee = _context.GetById(employeeId);
+            if (employee == null) {
                 return NotFound();
             }
 
-            return View(company);
+            return View(employee);
         }
 
         // POST: Companies/Delete/5
@@ -106,9 +121,9 @@ namespace DapperDemo.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<bool> CompanyExists(int id) {
-            var company = _context.GetById(id);
-            if (company != null && company.Id < 1) {
+        private async Task<bool> EmployeeExists(int id) {
+            var employee = _context.GetById(id);
+            if (employee != null && employee.Id < 1) {
                 return false;
             }
             return true;

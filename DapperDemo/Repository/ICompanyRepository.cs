@@ -2,10 +2,10 @@
 
 namespace DapperDemo.Repository {
     public interface ICompanyRepository {
-        Task<List<Company>> GetAll();
-        Task<Company> GetById(int id);
-        Task<Company> Create(Company company);
-        Task<Company> Update(Company company);
-        Task<bool> Delete(int id);
+        List<Company> GetAll();
+        Company GetById(int id);
+        Company Create(Company company);
+        Company Update(Company company);
+        bool Delete(int id);
     }
 }
